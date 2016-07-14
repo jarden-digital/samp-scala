@@ -11,7 +11,9 @@ scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
 
 isSnapshot := true
 
+resolvers += Resolver.mavenLocal
+
 libraryDependencies ++= Seq(
-  "nz.co.fnzc" % "samp" % "1.0",
+  "nz.co.fnzc" % "samp" % "1.3",
   "io.spray" %%  "spray-json" % "1.3.2"
 )
