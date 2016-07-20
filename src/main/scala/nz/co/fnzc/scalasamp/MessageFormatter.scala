@@ -21,8 +21,6 @@ object MessageFormatter extends DefaultMessageReaders with DefaultMessageWriters
   }
 
   def write[A](m: Message[A])(implicit msgWriter: MessageBodyWriter[A]): MessageI = {
-    val df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZ")
-    val date = Some(Samp.Date -> df.format(new Date()))
     new MessageI {
       override def action() = m.action
       override def kind() = m.kind
@@ -31,7 +29,7 @@ object MessageFormatter extends DefaultMessageReaders with DefaultMessageWriters
         case mw: MessageWith[A] => Optional.of(msgWriter.write(mw.body))
       }
       override def status() = toOptional(m.status)
-      override def headers() = (m.headers ++ date).asJava
+      override def headers() = m.headers.asJava
       override def version() = ""
     }
   }
