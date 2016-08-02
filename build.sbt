@@ -3,7 +3,7 @@ name := "samp-scala"
 
 organization := "nz.co.fnzc"
 
-version := "1.0"
+version := "1.0.1"
 
 scalaVersion := "2.11.8"
 
@@ -14,6 +14,6 @@ isSnapshot := true
 resolvers += Resolver.mavenLocal
 
 libraryDependencies ++= Seq(
-  "nz.co.fnzc" % "samp" % "1.4",
+  "nz.co.fnzc" % "samp" % "1.6",
   "io.spray" %%  "spray-json" % "1.3.2"
 )
