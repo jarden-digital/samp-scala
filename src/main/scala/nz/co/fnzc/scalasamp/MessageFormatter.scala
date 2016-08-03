@@ -1,6 +1,6 @@
 package nz.co.fnzc.scalasamp
 
-import java.text.SimpleDateFormat
+import java.util.function.Supplier
 import java.util.{Date, Optional}
 
 import nz.co.fnzc.samp.{MessageI, Samp}
@@ -21,6 +21,13 @@ object MessageFormatter extends DefaultMessageReaders with DefaultMessageWriters
   }
 
   def write[A](m: Message[A])(implicit msgWriter: MessageBodyWriter[A]): MessageI = {
+    val dSamp = Samp.defaultInstance()
+
+    def someIfAbsent(map: Map[String, String], key: String, value: Supplier[Optional[String]]) = {
+      if (map.contains(key)) None
+      else Some(key -> value.get().get())
+    }
+
     new MessageI {
       override def action() = m.action
       override def kind() = m.kind
@@ -29,7 +36,9 @@ object MessageFormatter extends DefaultMessageReaders with DefaultMessageWriters
         case mw: MessageWith[A] => Optional.of(msgWriter.write(mw.body))
       }
       override def status() = toOptional(m.status)
-      override def headers() = m.headers.asJava
+      override def headers() = (m.headers ++
+        someIfAbsent(m.headers, Samp.CorrelationId, dSamp.defaultCorrelationIdSupplier) ++
+        someIfAbsent(m.headers, Samp.Date, dSamp.defaultDateSupplier)).asJava
       override def version() = ""
     }
   }
