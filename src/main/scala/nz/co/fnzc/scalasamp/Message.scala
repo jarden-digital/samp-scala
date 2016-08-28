@@ -20,6 +20,13 @@ sealed trait Message[+A] {
   }
 }
 
+object Message {
+  def apply(status: String, action: String, tracePath: String) = {
+    val headers = Map(Samp.Trace -> tracePath)
+    EmptyMessage(Samp.Event, Some(status), action, headers)
+  }
+}
+
 final case class MessageWith[+A](kind: String,
                           status: Option[String],
                           action: String,
