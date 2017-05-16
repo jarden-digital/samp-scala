@@ -22,6 +22,10 @@ trait DefaultMessageWriters {
   implicit val StringWriter = new MessageBodyWriter[String] {
     override def write(b: String): Array[Byte] = b.getBytes
   }
+
+  implicit val EmptyWriter = new MessageBodyWriter[Nothing] {
+    override def write(empty: Nothing): Array[Byte] = Array[Byte]()
+  }
 }
 
 object DefaultMessageWriters extends DefaultMessageWriters
