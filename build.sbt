@@ -11,9 +11,10 @@ crossScalaVersions := Seq("2.11.8")
 
 scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
 
-//resolvers += Resolver.mavenLocal
-resolvers += "Build4w Nexus Repository" at "https://build4w.fnzsl.com/nexus/repository/maven-releases"
+resolvers += Resolver.mavenLocal
+resolvers += "GitHubPackages" at "https://maven.pkg.github.com/jarden-digital/samp"
 
+credentials += Credentials("GitHub Package Registry", "maven.pkg.github.com", "<YOUR GITHUB USERNAME>", "<YOUR GITHUB TOKEN>")
 
 libraryDependencies ++= Seq(
   "nz.co.fnzc" % "samp" % "1.6",
@@ -21,12 +22,3 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.0.5" % "test"
 )
 
-credentials += Credentials("Sonatype Nexus Repository Manager", "build4w.fnzsl.com", "admin", "OrderlyHorse%3")
-
-publishTo := {
-  val nexus = "https://build4w.fnzsl.com/nexus/repository/"
-  if (isSnapshot.value)
-    Some("snapshots" at nexus + "maven-snapshots")
-  else
-    Some("releases"  at nexus + "maven-releases")
-}
